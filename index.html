@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            text-align: center;
+        }
+        .container {
+            margin: 0 auto;
+            height: 396px;
+            width: 660px;
+           /*  width: 682px; */
+            position: relative;
+        }
+
+        .img-container {
+            float: left;
+            width: 132px;
+            height: 198px;
+           /*  border: 1px solid red;
+            margin: 1px; */
+        }
+        .rotate180 {
+            transform:rotate(180deg);
+            -ms-transform:rotate(180deg); 	/* IE 9 */
+            -moz-transform:rotate(180deg); 	/* Firefox */
+            -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+            -o-transform:rotate(180deg); 	/* Opera */
+        }
+        .img-container img {
+            float: left;
+        }
+        .dest {
+            position: relative;
+            overflow: hidden;
+        }
+        #tip {
+			text-align: left;
+			width: 570px;
+			margin: 0 auto;
+			color: red;
+			font-size: 43px;
+		}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="img-container" id="1">
+            <div class="dest" ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/1.png" alt="">
+            </div>
+        </div>
+        <div class="img-container" id="2">
+            <div class="dest"ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/2.png" alt="">
+            </div>
+        </div>
+        <div class="img-container" id="3">
+            <div class="dest"ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/3.png" alt="">
+            </div>
+        </div>
+        <div class="img-container" id="4">
+            <div class="dest"ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/4.png" alt="">
+            </div>
+        </div>
+        <div class="img-container" id="5">
+            <div class="dest"ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/5.png" alt="">
+            </div>
+        </div>
+        <div class="img-container" id="6">
+            <div class="dest"ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/6.png" alt="">
+            </div>
+        </div>
+        <div class="img-container" id="7">
+            <div class="dest"ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/7.png" alt="">
+            </div>
+        </div>
+        <div class="img-container" id="8">
+            <div class="dest"ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/8.png" alt="">
+            </div>
+        </div>
+        <div class="img-container" id="9">
+            <div class="dest"ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/9.png" alt="">
+            </div>
+        </div>
+        <div class="img-container" id="10">
+            <div class="dest"ondblclick="dbClick(this)" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                <img src="img/10.png"  alt="">
+            </div>
+        </div>
+    </div>
+    <div id="tip">1.双击单块砖可旋转180度<br/>2.可拖拽砖和其他砖交换位置</div>
+</body>
+<script>
+    var dragged;
+    function dbClick(ele){
+        var img = ele.children[0];
+        if(img.classList.contains('rotate180') == true){
+            img.classList.remove('rotate180')
+        }else {
+            img.classList.add('rotate180')
+        }
+    }
+    document.addEventListener("drag", function (event) { }, false);
+     
+    document.addEventListener("dragstart", function (event) {
+        // 保存拖动元素的引用(ref.)
+        dragged = event.target;    // 使其半透明
+           
+        event.target.style.opacity = .5; 
+    }, false);
+
+     
+    document.addEventListener("dragend", function (event) {
+        // 重置透明度
+        event.target.style.opacity = ""; 
+    }, false);
+
+      /* 放下目标节点时触发事件 */  
+    document.addEventListener("dragover", function (event) {
+        // 阻止默认动作
+        event.preventDefault(); 
+    }, false);
+
+     
+    document.addEventListener("dragenter", function (event) {
+          // 当可拖动的元素进入可放置的目标高亮目标节点
+        if (event.target.className == "dropzone") {     
+            event.target.style.background = "purple";   
+        }
+    }, false);
+
+     
+    document.addEventListener("dragleave", function (event) {    // 当拖动元素离开可放置目标节点，重置其背景
+        if (event.target.className == "dropzone") {     
+            event.target.style.background = "";   
+        }
+    }, false);
+
+     
+    document.addEventListener("drop", function (event) {    // 阻止默认动作（如打开一些元素的链接）
+           
+        event.preventDefault();    // 移动拖动的元素到所选择的放置目标节点
+        if (event.target.parentNode.className == 'dest') { 
+            var destTarget = event.target;
+            var draggedParent = dragged.parentNode
+            destTarget.parentNode.appendChild(dragged);
+            destTarget.parentNode.removeChild(destTarget)
+            draggedParent.appendChild(destTarget);
+        }    
+    }, false);
+</script>
+
+</html>
